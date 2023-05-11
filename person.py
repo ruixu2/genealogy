@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Person:
     def __init__(self, name, gender, birthdate=None, deathdate=None, occupation=None, father=None, mother=None, spouses=None, children=None, biography=None):
         self.name = name  # 姓名
@@ -10,3 +13,12 @@ class Person:
         self.children = children or []  # 子女，用 Person 对象的列表表示
         self.occupation =occupation  # 职业，用字符串表示
         self.biography =biography  # 生平事迹，用字符串表示
+
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        __name = __value
+    
+    def __getattribute__(self, __name: str) -> Any:
+        return __name
+
+p=Person.__init__()
+
