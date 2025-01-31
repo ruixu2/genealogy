@@ -36,10 +36,18 @@ class Person:
         mother、father、birthday、uid
         """
 
-
+    def add_attr(self, attr_name, attr_value):
+        if hasattr(self, attr_name):
+            print(f'has {attr_name}, edit it directly')
+        else:
+            setattr(self, attr_name, attr_value)
+    def list_attr(self):
+        for item in dir(self):
+            if callable(getattr(p, item)):
+                continue
+            if "__" not in item:
+                print(item,getattr(p, item))
 
 p = Person(name='xu', age=20)
-for item in dir(p):
-    if "__" not in item:
-        print(item)
-        print(getattr(p, item))
+p.add_attr('sex', 'male')
+print(p.list_attr())
