@@ -1,24 +1,45 @@
 from typing import Any
+import time, random, string
+
+
+def generate_uid():
+    # 获取当前时间戳，转换为整数形式
+    timestamp = int(time.time())
+    # 生成一个包含所有字母（大小写）和数字的字符集
+    characters = string.ascii_letters + string.digits
+    # 将时间戳转换为字符串
+    timestamp_str = str(timestamp)
+    # 初始化一个空字符串用于存储最终的 UID
+    uid = ""
+    # 循环 10 次来生成 10 位的 UID
+    for i in range(10):
+        # 如果时间戳字符串还有字符可用，则随机选择使用时间戳字符或字符集中的字符
+        if i < len(timestamp_str):
+            uid += random.choice(timestamp_str + characters)
+        # 如果时间戳字符串已用完，则只从字符集中选择字符
+        else:
+            uid += random.choice(characters)
+    return uid
 
 
 class Person:
-    def __init__(self, name, gender, birthdate=None, deathdate=None, occupation=None, father=None, mother=None, spouses=None, children=None, biography=None):
-        self.name = name  # 姓名
-        self.gender = gender  # 性别，用字符串表示，如 '男' 或 '女'
-        self.birthdate = birthdate  # 出生日期，用 datetime.date 对象表示
-        self.deathdate = deathdate  # 死亡日期，用 datetime.date 对象表示，若未逝世则为 None
-        self.father = father  # 父亲，用 Person 对象表示，若未知则为 None
-        self.mother = mother  # 母亲，用 Person 对象表示，若未知则为 None
-        self.spouses = spouses or []  # 配偶，用 Person 对象的列表表示
-        self.children = children or []  # 子女，用 Person 对象的列表表示
-        self.occupation =occupation  # 职业，用字符串表示
-        self.biography =biography  # 生平事迹，用字符串表示
+    def __init__(self, **kwargs):
+        """
+        create a man without info, it should exist objectively
+        """
+        self.uid = generate_uid()
+        for key, value in kwargs.items():
+            # 将键值对设置为类实例的属性
+            setattr(self, key, value)
+        """
+        it should be exist but without must
+        mother、father、birthday、uid
+        """
 
-    def __setattr__(self, __name: str, __value: Any) -> None:
-        __name = __value
-    
-    def __getattribute__(self, __name: str) -> Any:
-        return __name
 
-p=Person.__init__()
 
+p = Person(name='xu', age=20)
+for item in dir(p):
+    if "__" not in item:
+        print(item)
+        print(getattr(p, item))
